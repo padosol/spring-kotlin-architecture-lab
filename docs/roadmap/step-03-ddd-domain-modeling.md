@@ -8,7 +8,7 @@
 
 ## Goal
 
-단순 문자열과 숫자로 표현된 핵심 개념을 Value Object와 Aggregate로 옮긴다. 도메인 규칙이 Controller, DTO, JPA 세부사항에 흩어지지 않도록 만든다.
+단순 문자열과 숫자로 표현된 핵심 개념을 Value Object와 Aggregate로 옮긴다. [Step 0.5](step-00-5-domain-baseline.md)에서 정의한 도메인 규칙이 Controller, DTO, JPA 세부사항에 흩어지지 않도록 만든다.
 
 ## As-Is
 

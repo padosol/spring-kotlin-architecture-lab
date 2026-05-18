@@ -9,6 +9,7 @@
 ### As-Is
 
 - `payment`, `notification`, `auth` 각각이 하나의 Kotlin 파일에 Controller, Request/Response DTO, Service, Interface, 구현체를 함께 가진다.
+- 세 도메인의 주요 규칙과 확장 후보는 문서화되어 있지만 아직 코드에는 반영되어 있지 않다.
 - DB 의존성은 준비되어 있지만 아직 영속성 모델, Repository, 트랜잭션 경계가 없다.
 - 테스트는 Spring context 로딩과 API smoke test 중심이다.
 - `PaymentProcessor`, `NotificationSender`, `Authenticator`로 기본적인 Strategy 패턴만 연습 가능한 상태다.
@@ -24,6 +25,7 @@
 ## Progress
 
 - [x] Step 0. Project Bootstrap: Spring Boot/Kotlin 프로젝트 생성, 샘플 API, Git 초기화
+- [x] [Step 0.5. 도메인 베이스라인 정의](roadmap/step-00-5-domain-baseline.md)
 - [ ] [Step 1. TDD 안전망 만들기](roadmap/step-01-tdd-safety-net.md)
 - [ ] [Step 2. 레이어 분리](roadmap/step-02-layer-separation.md)
 - [ ] [Step 3. DDD 기반 도메인 모델링](roadmap/step-03-ddd-domain-modeling.md)
@@ -35,12 +37,21 @@
 
 ## Step Checklist
 
+### Step 0.5. 도메인 베이스라인 정의
+
+- [x] `payment` 주요 개념, 핵심 규칙, 확장 후보 정의
+- [x] `notification` 주요 개념, 핵심 규칙, 확장 후보 정의
+- [x] `auth` 주요 개념, 핵심 규칙, 확장 후보 정의
+- [x] 의도적으로 남길 아키텍처 약점 정의
+- [x] Step 1 테스트 후보 도출
+
 ### Step 1. TDD 안전망 만들기
 
 - [ ] 서비스 단위 테스트 추가
 - [ ] 지원 타입별 성공 케이스 검증
 - [ ] 미지원 타입 실패 정책 테스트로 고정
 - [ ] validation 실패 API 테스트 추가
+- [ ] Step 0.5의 도메인 규칙 중 우선순위 높은 실패 케이스 테스트 추가
 - [ ] `./gradlew test` 통과
 
 ### Step 2. 레이어 분리

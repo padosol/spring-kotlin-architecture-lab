@@ -1,10 +1,12 @@
 # Roadmap Details
 
-이 디렉터리는 단계별 상세 로드맵을 보관한다. `TODO.md`는 진행 상황을 빠르게 확인하는 체크리스트로 유지하고, 각 단계의 `As-Is`, `To-Be`, 변경 기록 포인트, 학습 포인트, 리뷰 질문은 이 디렉터리의 Step 문서에 둔다.
+이 디렉터리는 e-commerce 아키텍처 학습을 위한 단계별 상세 로드맵을 보관한다. `TODO.md`는 진행 상황을 빠르게 확인하는 체크리스트로 유지하고, 각 단계의 `As-Is`, `To-Be`, 변경 기록 포인트, 학습 포인트, 리뷰 질문은 이 디렉터리의 Step 문서에 둔다.
+
+초기 구현 범위는 `payment`, `notification`, `auth`다. `order`, `cart`, `catalog`, `inventory`, `shipment`는 Step 0.5에서 주변 도메인으로 정의하고, 이후 단계에서 필요할 때 코드로 확장한다.
 
 ## 문서 구조
 
-- [Step 0.5. 도메인 베이스라인 정의](step-00-5-domain-baseline.md)
+- [Step 0.5. E-commerce 도메인 베이스라인 정의](step-00-5-domain-baseline.md)
 - [Step 1. TDD 안전망 만들기](step-01-tdd-safety-net.md)
 - [Step 2. 레이어 분리](step-02-layer-separation.md)
 - [Step 3. DDD 기반 도메인 모델링](step-03-ddd-domain-modeling.md)

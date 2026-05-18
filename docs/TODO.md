@@ -1,6 +1,6 @@
-# TODO: Design Pattern Practice Roadmap
+# TODO: E-commerce Architecture Practice Roadmap
 
-`payment`, `notification`, `auth` 세 도메인을 단계적으로 개선하면서 TDD, 레이어 분리, DDD, 디자인 패턴을 학습하기 위한 진행 체크리스트다.
+e-commerce 도메인의 주문 흐름 안에서 `payment`, `notification`, `auth` 세 영역을 단계적으로 개선하면서 TDD, 레이어 분리, DDD, 디자인 패턴을 학습하기 위한 진행 체크리스트다.
 
 상세한 `As-Is`, `To-Be`, 변경 기록 포인트, 학습 포인트, 리뷰 질문은 [Roadmap Details](roadmap/README.md)에 분리해서 관리한다. 단계별 회고는 [Learning Log](LEARNING_LOG.md)에 누적한다.
 
@@ -9,7 +9,9 @@
 ### As-Is
 
 - `payment`, `notification`, `auth` 각각이 하나의 Kotlin 파일에 Controller, Request/Response DTO, Service, Interface, 구현체를 함께 가진다.
-- 세 도메인의 주요 규칙과 확장 후보는 문서화되어 있지만 아직 코드에는 반영되어 있지 않다.
+- 세 도메인은 e-commerce의 주문, 결제, 고객 커뮤니케이션, 고객 인증 흐름에 연결되는 규칙과 확장 후보를 문서로 가진다.
+- `order`, `cart`, `catalog`, `inventory`, `shipment`는 아직 코드에 없고 주변 도메인으로만 문서화되어 있다.
+- 세 도메인의 주요 규칙은 아직 코드에는 반영되어 있지 않다.
 - DB 의존성은 준비되어 있지만 아직 영속성 모델, Repository, 트랜잭션 경계가 없다.
 - 테스트는 Spring context 로딩과 API smoke test 중심이다.
 - `PaymentProcessor`, `NotificationSender`, `Authenticator`로 기본적인 Strategy 패턴만 연습 가능한 상태다.
@@ -18,6 +20,7 @@
 
 - HTTP/API, Application, Domain, Infrastructure 레이어를 분리한다.
 - 도메인 규칙은 Controller나 DTO가 아니라 Domain/Application 계층에 둔다.
+- 주문 흐름을 기준으로 결제 승인, 결제 실패, 알림 발송, 인증 실패 정책을 테스트로 고정한다.
 - 테스트를 먼저 작성하고 실패를 확인한 뒤 구현하는 TDD 루프를 따른다.
 - 디자인 패턴은 목적이 분명할 때만 적용하고, 적용 전후의 장단점을 문서화한다.
 - 새 결제 수단, 새 알림 채널, 새 인증 방식을 기존 코드 변경 최소화로 추가할 수 있게 만든다.
@@ -25,7 +28,7 @@
 ## Progress
 
 - [x] Step 0. Project Bootstrap: Spring Boot/Kotlin 프로젝트 생성, 샘플 API, Git 초기화
-- [x] [Step 0.5. 도메인 베이스라인 정의](roadmap/step-00-5-domain-baseline.md)
+- [x] [Step 0.5. E-commerce 도메인 베이스라인 정의](roadmap/step-00-5-domain-baseline.md)
 - [ ] [Step 1. TDD 안전망 만들기](roadmap/step-01-tdd-safety-net.md)
 - [ ] [Step 2. 레이어 분리](roadmap/step-02-layer-separation.md)
 - [ ] [Step 3. DDD 기반 도메인 모델링](roadmap/step-03-ddd-domain-modeling.md)
@@ -37,8 +40,10 @@
 
 ## Step Checklist
 
-### Step 0.5. 도메인 베이스라인 정의
+### Step 0.5. E-commerce 도메인 베이스라인 정의
 
+- [x] e-commerce 학습 범위와 주변 도메인 정의
+- [x] 대표 주문, 결제, 알림, 인증 흐름 정의
 - [x] `payment` 주요 개념, 핵심 규칙, 확장 후보 정의
 - [x] `notification` 주요 개념, 핵심 규칙, 확장 후보 정의
 - [x] `auth` 주요 개념, 핵심 규칙, 확장 후보 정의
@@ -51,7 +56,8 @@
 - [ ] 지원 타입별 성공 케이스 검증
 - [ ] 미지원 타입 실패 정책 테스트로 고정
 - [ ] validation 실패 API 테스트 추가
-- [ ] Step 0.5의 도메인 규칙 중 우선순위 높은 실패 케이스 테스트 추가
+- [ ] Step 0.5의 e-commerce 규칙 중 우선순위 높은 실패 케이스 테스트 추가
+- [ ] 주문 결제, 결제 완료 알림, 고객 인증 흐름의 최소 happy path 고정
 - [ ] `./gradlew test` 통과
 
 ### Step 2. 레이어 분리

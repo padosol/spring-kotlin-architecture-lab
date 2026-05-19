@@ -12,6 +12,54 @@
 
 이 단계의 목표는 완성된 아키텍처를 만드는 것이 아니라, 이후 TDD, 레이어 분리, DDD, 디자인 패턴 학습에서 비교할 수 있는 도메인 기준선을 만드는 것이다.
 
+## Step Output
+
+Step 0.5의 산출물은 코드 구현이 아니라 학습 기준선이다.
+
+- 코드 변경은 하지 않는다.
+- e-commerce 도메인 용어, 규칙, 확장 후보를 문서로 고정한다.
+- 현재 코드의 부족함을 의도적으로 남겨 Step 1 이후의 테스트, 리팩터링, 패턴 적용 재료로 사용한다.
+- 다음 단계에서 어떤 규칙을 먼저 테스트로 옮길지 우선순위를 정한다.
+
+## Code Baseline Snapshot
+
+현재 코드는 아래 상태를 Step 0.5의 As-Is로 고정한다.
+
+### Payment Code
+
+- `PaymentController.kt` 한 파일에 API DTO, Controller, Service, Strategy interface, Strategy 구현체가 모두 있다.
+- `CARD`, `BANK_TRANSFER`는 모두 즉시 `APPROVED`를 반환한다.
+- `orderId`와 `amount`는 API validation만 있고 주문 소유자, 주문 상태, 주문 금액 일치 여부는 확인하지 않는다.
+- `PaymentStatus`는 `APPROVED` 하나뿐이라 실패, 요청, 취소, 환불 상태를 표현할 수 없다.
+- 미지원 결제 수단은 `ResponseStatusException`으로 직접 HTTP 오류가 된다.
+
+### Notification Code
+
+- `NotificationController.kt` 한 파일에 API DTO, Controller, Service, Strategy interface, Strategy 구현체가 모두 있다.
+- `EMAIL`, `SMS`, `PUSH`는 모두 즉시 `SENT`를 반환한다.
+- 이메일 형식, 전화번호 형식, 디바이스 토큰 형식 검증이 없다.
+- 주문, 결제, 인증 이벤트와 연결되어 있지 않고 사용자가 직접 제목과 본문을 넘긴다.
+- 발송 실패, 재시도, 템플릿, 고객 수신 선호도 정책이 없다.
+
+### Auth Code
+
+- `AuthController.kt` 한 파일에 API DTO, Controller, Service, Strategy interface, Strategy 구현체가 모두 있다.
+- `PASSWORD`, `OAUTH`는 credential 검증 없이 항상 인증 성공을 반환한다.
+- 계정 저장소, 고객 식별자, 역할, 계정 잠금, 비활성 계정, 토큰 만료가 없다.
+- 인증 결과가 주문이나 결제 API 권한 검증과 연결되어 있지 않다.
+- Spring Security 설정은 모든 요청을 허용한다.
+
+## Why No Code Change In Step 0.5
+
+이 단계에서 `Order`, `Customer`, `PaymentAttempt`, `NotificationEvent`를 바로 구현하지 않는 이유:
+
+- Step 1에서 TDD로 현재 동작과 실패 정책을 먼저 고정하기 위해서다.
+- Step 2에서 레이어 분리 전후를 비교할 수 있어야 한다.
+- Step 3에서 DDD 모델링을 적용할 때 문자열과 숫자로 된 현재 구조와 Value Object, Aggregate를 비교할 수 있어야 한다.
+- Step 4에서 디자인 패턴을 목적 없이 먼저 넣지 않고, 실제 변경 압력이 생긴 뒤 적용하기 위해서다.
+
+Step 0.5는 "도메인은 명확하지만 구현과 구조는 아직 부족한 상태"를 만드는 단계다.
+
 ## As-Is
 
 - 세 도메인은 성공 응답을 반환하는 샘플 API에 가깝다.
@@ -250,6 +298,22 @@ Step 1에서 우선순위가 높은 테스트 후보:
 - Auth: 잠긴 고객 계정은 인증할 수 없다.
 - Auth: 인증되지 않은 고객은 결제를 요청할 수 없다.
 
+## Step 1 Priority Cut
+
+Step 1에서는 모든 규칙을 한 번에 구현하지 않는다. 테스트 안전망을 만드는 것이 목표이므로 아래 순서로 진행한다.
+
+1. 현재 API happy path를 유지한다.
+2. Service 단위에서 Strategy 선택 성공과 실패를 테스트한다.
+3. API validation 실패를 테스트한다.
+4. e-commerce 규칙은 각 도메인에서 하나씩만 대표 실패 케이스를 먼저 고른다.
+5. 더 큰 상태 변화가 필요한 규칙은 Step 3 이후 도메인 모델링 단계로 넘긴다.
+
+우선순위가 높은 대표 실패 후보:
+
+- Payment: 주문 금액과 결제 금액 불일치
+- Notification: 이메일 채널의 잘못된 수신자 형식
+- Auth: 잘못된 비밀번호 인증 실패
+
 ## Change Log Points
 
 - e-commerce 전체 흐름 중 이번 프로젝트가 직접 구현할 범위와 미룰 범위를 기록한다.
@@ -279,7 +343,10 @@ Step 1에서 우선순위가 높은 테스트 후보:
 
 - e-commerce 학습 범위와 주변 도메인이 문서화되어 있다.
 - 세 도메인의 주요 개념, 핵심 규칙, 확장 후보가 e-commerce 맥락으로 문서화되어 있다.
+- 현재 코드의 부족함이 코드 베이스라인 스냅샷으로 기록되어 있다.
+- Step 0.5에서 코드 변경을 하지 않는 이유가 기록되어 있다.
 - Step 1에서 작성할 테스트 후보가 도출되어 있다.
+- Step 1에서 먼저 다룰 테스트 범위가 우선순위로 잘려 있다.
 - 코드 구조는 아직 의도적으로 미성숙한 상태로 남아 있다.
 
 ## Learning Log

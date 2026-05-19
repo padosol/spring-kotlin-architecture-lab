@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -78,5 +79,132 @@ class ApiSmokeTests(
 			.andExpect(jsonPath("$.principal").value("user@example.com"))
 			.andExpect(jsonPath("$.type").value("PASSWORD"))
 			.andExpect(jsonPath("$.authenticated").value(true))
+	}
+
+	@Test
+	fun `customer api returns customer baseline`() {
+		mockMvc.perform(get("/api/customers/customer-1"))
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$.customerId").value("customer-1"))
+			.andExpect(jsonPath("$.status").value("ACTIVE"))
+	}
+
+	@Test
+	fun `catalog api lists products`() {
+		mockMvc.perform(get("/api/catalog/products"))
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$[0].productId").value("product-1"))
+			.andExpect(jsonPath("$[0].status").value("ON_SALE"))
+	}
+
+	@Test
+	fun `cart api previews cart total`() {
+		mockMvc.perform(
+			post("/api/carts/preview")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(
+					"""
+					{
+						"customerId": "customer-1",
+						"items": [
+							{
+								"productId": "product-1",
+								"quantity": 2,
+								"unitPrice": 12000
+							}
+						]
+					}
+					""".trimIndent(),
+				),
+		)
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$.customerId").value("customer-1"))
+			.andExpect(jsonPath("$.totalAmount").value(24000))
+	}
+
+	@Test
+	fun `order api creates payment pending order`() {
+		mockMvc.perform(
+			post("/api/orders")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(
+					"""
+					{
+						"customerId": "customer-1",
+						"items": [
+							{
+								"productId": "product-1",
+								"quantity": 2,
+								"unitPrice": 12000
+							}
+						]
+					}
+					""".trimIndent(),
+				),
+		)
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$.customerId").value("customer-1"))
+			.andExpect(jsonPath("$.status").value("PAYMENT_PENDING"))
+			.andExpect(jsonPath("$.totalAmount").value(24000))
+	}
+
+	@Test
+	fun `inventory api reserves product quantity`() {
+		mockMvc.perform(
+			post("/api/inventory/reservations")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(
+					"""
+					{
+						"productId": "product-1",
+						"quantity": 2
+					}
+					""".trimIndent(),
+				),
+		)
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$.productId").value("product-1"))
+			.andExpect(jsonPath("$.status").value("RESERVED"))
+	}
+
+	@Test
+	fun `shipment api creates shipment baseline`() {
+		mockMvc.perform(
+			post("/api/shipments")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(
+					"""
+					{
+						"orderId": "order-1",
+						"recipientName": "Test User",
+						"address": "Seoul"
+					}
+					""".trimIndent(),
+				),
+		)
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$.orderId").value("order-1"))
+			.andExpect(jsonPath("$.status").value("READY"))
+	}
+
+	@Test
+	fun `promotion api applies welcome coupon`() {
+		mockMvc.perform(
+			post("/api/promotions/apply")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(
+					"""
+					{
+						"customerId": "customer-1",
+						"orderAmount": 10000,
+						"couponCode": "WELCOME10"
+					}
+					""".trimIndent(),
+				),
+		)
+			.andExpect(status().isOk)
+			.andExpect(jsonPath("$.customerId").value("customer-1"))
+			.andExpect(jsonPath("$.discountAmount").value(1000))
+			.andExpect(jsonPath("$.payableAmount").value(9000))
 	}
 }

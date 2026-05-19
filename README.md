@@ -17,7 +17,7 @@ Kotlin, Spring Boot, Gradle Kotlin DSL 기반 e-commerce 아키텍처 학습 프
 - `payment`: 주문 결제 승인, 실패, 취소, 환불 흐름을 `PaymentProcessor` 전략으로 확장
 - `notification`: 결제 완료, 결제 실패, 로그인 보안 알림을 `NotificationSender` 전략으로 확장
 - `auth`: 고객 인증, 계정 상태, 토큰 발급 흐름을 `Authenticator` 전략으로 확장
-- 주변 도메인: `order`, `cart`, `catalog`, `inventory`, `shipment`는 초기에는 문서상 경계로만 다루고 이후 단계에서 필요할 때 확장
+- e-commerce 구색 도메인: `customer`, `catalog`, `cart`, `order`, `inventory`, `shipment`, `promotion`은 얇은 API 기준선으로 두고 이후 단계에서 규칙과 구조를 강화
 
 ## Roadmap
 
@@ -56,4 +56,14 @@ curl -X POST http://localhost:8080/api/notifications \
 curl -X POST http://localhost:8080/api/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"principal":"user@example.com","credential":"secret","type":"PASSWORD"}'
+```
+
+```bash
+curl http://localhost:8080/api/catalog/products
+```
+
+```bash
+curl -X POST http://localhost:8080/api/orders \
+  -H 'Content-Type: application/json' \
+  -d '{"customerId":"customer-1","items":[{"productId":"product-1","quantity":2,"unitPrice":12000}]}'
 ```

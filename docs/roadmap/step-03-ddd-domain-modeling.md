@@ -13,7 +13,8 @@
 ## As-Is
 
 - `orderId`, `principal`, `recipient`가 단순 문자열이다.
-- 주문, 고객, 결제 시도, 알림 이벤트의 경계가 코드에 표현되어 있지 않다.
+- 주문, 고객, 상품, 재고, 배송, 할인 개념은 API DTO와 응답 모델로만 표현되어 있고 풍부한 도메인 객체가 아니다.
+- 결제 시도, 알림 이벤트의 경계가 코드에 표현되어 있지 않다.
 - 금액, 인증 정보, 알림 대상 같은 개념의 불변식이 흩어질 가능성이 크다.
 - 아직 Aggregate, Value Object, Domain Service의 기준이 없다.
 
@@ -28,7 +29,8 @@
 
 - [ ] `Money`, `OrderId`, `CustomerId`, `TransactionId` Value Object 추가
 - [ ] `Payment` Aggregate 추가: 결제 요청, 승인, 실패 상태 관리
-- [ ] 필요 시 최소 `OrderSnapshot` 또는 `OrderPaymentContext` 모델 추가
+- [ ] `Order`, `OrderItem`, `Product`, `InventoryReservation`, `Shipment`, `Coupon` 중 Step 3에서 다룰 최소 모델 선택
+- [ ] 필요 시 `OrderSnapshot` 또는 `OrderPaymentContext` 모델로 결제에 필요한 주문 정보를 분리
 - [ ] `NotificationMessage`, `Recipient` Value Object 추가
 - [ ] `AuthPrincipal`, `Credential` Value Object 추가
 - [ ] 도메인 객체 생성 실패 케이스 테스트 추가

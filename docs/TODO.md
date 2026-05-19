@@ -10,7 +10,8 @@ e-commerce 도메인의 주문 흐름 안에서 `payment`, `notification`, `auth
 
 - `payment`, `notification`, `auth` 각각이 하나의 Kotlin 파일에 Controller, Request/Response DTO, Service, Interface, 구현체를 함께 가진다.
 - 세 도메인은 e-commerce의 주문, 결제, 고객 커뮤니케이션, 고객 인증 흐름에 연결되는 규칙과 확장 후보를 문서로 가진다.
-- `order`, `cart`, `catalog`, `inventory`, `shipment`는 아직 코드에 없고 주변 도메인으로만 문서화되어 있다.
+- `customer`, `catalog`, `cart`, `order`, `inventory`, `shipment`, `promotion`은 e-commerce 구색을 위한 얇은 API 기준선만 가진다.
+- 구색 도메인은 서로 연결되어 있지 않고, 저장소/트랜잭션/실제 재고 차감/주문 상태 전이는 없다.
 - 세 도메인의 주요 규칙은 아직 코드에는 반영되어 있지 않다.
 - DB 의존성은 준비되어 있지만 아직 영속성 모델, Repository, 트랜잭션 경계가 없다.
 - 테스트는 Spring context 로딩과 API smoke test 중심이다.
@@ -42,13 +43,14 @@ e-commerce 도메인의 주문 흐름 안에서 `payment`, `notification`, `auth
 
 ### Step 0.5. E-commerce 도메인 베이스라인 정의
 
-- [x] e-commerce 학습 범위와 주변 도메인 정의
+- [x] e-commerce 학습 범위와 구색 도메인 정의
 - [x] 대표 주문, 결제, 알림, 인증 흐름 정의
 - [x] `payment` 주요 개념, 핵심 규칙, 확장 후보 정의
 - [x] `notification` 주요 개념, 핵심 규칙, 확장 후보 정의
 - [x] `auth` 주요 개념, 핵심 규칙, 확장 후보 정의
+- [x] `customer`, `catalog`, `cart`, `order`, `inventory`, `shipment`, `promotion` 얇은 코드 기준선 추가
 - [x] 현재 코드 베이스라인 스냅샷 기록
-- [x] Step 0.5에서 코드 변경을 하지 않는 이유 기록
+- [x] Step 0.5에서 구색 도메인을 얇게만 구현하는 이유 기록
 - [x] 의도적으로 남길 아키텍처 약점 정의
 - [x] Step 1 테스트 후보 도출
 - [x] Step 1에서 먼저 다룰 테스트 범위 우선순위화

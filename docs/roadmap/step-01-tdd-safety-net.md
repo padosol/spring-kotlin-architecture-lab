@@ -15,7 +15,8 @@
 - API smoke test는 있지만 서비스 단위 테스트가 부족하다.
 - 실패 케이스, 경계값, 지원하지 않는 타입에 대한 테스트가 부족하다.
 - 도메인 규칙은 문서화되어 있지만 아직 테스트와 코드로 고정되어 있지 않다.
-- `payment`, `notification`, `auth`가 아직 주문 흐름 안에서 연결되어 검증되지 않는다.
+- `customer`, `catalog`, `cart`, `order`, `inventory`, `shipment`, `promotion`은 API 구색만 있고 주문 흐름 안에서 연결되어 검증되지 않는다.
+- `payment`, `notification`, `auth`도 주문 흐름 안에서 연결되어 검증되지 않는다.
 - 구현을 먼저 만들고 테스트로 확인하는 흐름이다.
 
 ## To-Be
@@ -35,6 +36,7 @@
 - [ ] 요청 필드 누락, 빈 문자열, 음수 금액 validation 테스트 추가
 - [ ] Step 0.5의 e-commerce 테스트 후보 중 각 도메인별 실패 케이스 1개 이상 선택
 - [ ] 주문 결제, 결제 완료 알림, 고객 인증 흐름의 최소 happy path 테스트 추가
+- [ ] 구색 도메인의 API smoke test를 유지하면서 도메인 간 연결 테스트는 아직 추가하지 않을 범위를 기록
 - [ ] 테스트 이름을 요구사항 문장처럼 작성
 
 ## Change Log Points

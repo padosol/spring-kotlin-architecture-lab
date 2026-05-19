@@ -2,7 +2,7 @@
 
 이 디렉터리는 e-commerce 아키텍처 학습을 위한 단계별 상세 로드맵을 보관한다. `TODO.md`는 진행 상황을 빠르게 확인하는 체크리스트로 유지하고, 각 단계의 `As-Is`, `To-Be`, 변경 기록 포인트, 학습 포인트, 리뷰 질문은 이 디렉터리의 Step 문서에 둔다.
 
-초기 구현 범위는 `payment`, `notification`, `auth`다. `order`, `cart`, `catalog`, `inventory`, `shipment`는 Step 0.5에서 주변 도메인으로 정의하고, 이후 단계에서 필요할 때 코드로 확장한다.
+핵심 학습 범위는 `payment`, `notification`, `auth`다. 다만 e-commerce 구색을 위해 Step 0.5에서 `customer`, `catalog`, `cart`, `order`, `inventory`, `shipment`, `promotion`을 얇은 API 기준선으로 추가한다. 이 구색 도메인들은 완성된 설계가 아니라 이후 TDD, 레이어 분리, DDD에서 책임과 경계를 개선할 학습 재료다.
 
 ## 문서 구조
 

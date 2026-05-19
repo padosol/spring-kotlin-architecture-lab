@@ -261,7 +261,7 @@
 
 ### Commit
 
-- `67c39a7` docs: lock step 0.5 code baseline
+- `0a44987` docs: lock step 0.5 code baseline
 
 ### As-Is
 

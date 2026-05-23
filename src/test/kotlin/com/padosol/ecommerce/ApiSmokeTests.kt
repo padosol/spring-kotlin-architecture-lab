@@ -1,4 +1,4 @@
-package com.example.designpattern
+package com.padosol.ecommerce
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

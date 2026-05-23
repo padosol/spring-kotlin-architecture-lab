@@ -1,4 +1,4 @@
-package com.example.designpattern.config
+package com.padosol.ecommerce.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

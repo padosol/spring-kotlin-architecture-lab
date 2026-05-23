@@ -1,4 +1,4 @@
-package com.example.designpattern.notification
+package com.padosol.ecommerce.notification
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank

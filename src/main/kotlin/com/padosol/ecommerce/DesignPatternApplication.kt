@@ -1,4 +1,4 @@
-package com.example.designpattern
+package com.padosol.ecommerce
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

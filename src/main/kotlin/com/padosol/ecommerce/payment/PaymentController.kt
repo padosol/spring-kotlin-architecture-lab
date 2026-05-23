@@ -1,4 +1,4 @@
-package com.example.designpattern.payment
+package com.padosol.ecommerce.payment
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank

@@ -1,4 +1,4 @@
-package com.example.designpattern.auth
+package com.padosol.ecommerce.auth
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank

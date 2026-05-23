@@ -26,7 +26,7 @@ Controller 파일에 모여 있는 책임을 API, Application, Domain, Infrastru
 ## Recommended Package Structure
 
 ```text
-com.example.designpattern
+com.padosol.ecommerce
 ├── payment
 │   ├── api
 │   ├── application

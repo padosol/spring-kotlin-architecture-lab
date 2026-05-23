@@ -1,4 +1,4 @@
-package com.example.designpattern.customer
+package com.padosol.ecommerce.customer
 
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

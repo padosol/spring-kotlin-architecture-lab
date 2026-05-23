@@ -1,4 +1,4 @@
-package com.example.designpattern.cart
+package com.padosol.ecommerce.order
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
@@ -12,7 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-data class CartItemRequest(
+enum class OrderStatus {
+	CREATED,
+	PAYMENT_PENDING,
+	PAID,
+	CANCELLED,
+	REFUNDED,
+}
+
+data class OrderItemRequest(
 	@field:NotBlank
 	val productId: String,
 	@field:Positive
@@ -21,33 +29,34 @@ data class CartItemRequest(
 	val unitPrice: BigDecimal,
 )
 
-data class CartPreviewRequest(
+data class CreateOrderRequest(
 	@field:NotBlank
 	val customerId: String,
 	@field:Valid
 	@field:Size(min = 1)
-	val items: List<CartItemRequest>,
+	val items: List<OrderItemRequest>,
 )
 
-data class CartItemResponse(
+data class OrderItemResponse(
 	val productId: String,
 	val quantity: Int,
 	val unitPrice: BigDecimal,
 	val lineAmount: BigDecimal,
 )
 
-data class CartPreviewResponse(
-	val cartId: String,
+data class OrderResponse(
+	val orderId: String,
 	val customerId: String,
-	val items: List<CartItemResponse>,
+	val items: List<OrderItemResponse>,
 	val totalAmount: BigDecimal,
+	val status: OrderStatus,
 )
 
 @Service
-class CartService {
-	fun preview(request: CartPreviewRequest): CartPreviewResponse {
+class OrderService {
+	fun createOrder(request: CreateOrderRequest): OrderResponse {
 		val items = request.items.map { item ->
-			CartItemResponse(
+			OrderItemResponse(
 				productId = item.productId,
 				quantity = item.quantity,
 				unitPrice = item.unitPrice,
@@ -55,24 +64,25 @@ class CartService {
 			)
 		}
 
-		return CartPreviewResponse(
-			cartId = "cart-${UUID.randomUUID()}",
+		return OrderResponse(
+			orderId = "order-${UUID.randomUUID()}",
 			customerId = request.customerId,
 			items = items,
 			totalAmount = items.fold(BigDecimal.ZERO) { total, item -> total.add(item.lineAmount) },
+			status = OrderStatus.PAYMENT_PENDING,
 		)
 	}
 
-	private fun CartItemRequest.lineAmount(): BigDecimal =
+	private fun OrderItemRequest.lineAmount(): BigDecimal =
 		unitPrice.multiply(BigDecimal.valueOf(quantity.toLong()))
 }
 
 @RestController
-@RequestMapping("/api/carts")
-class CartController(
-	private val cartService: CartService,
+@RequestMapping("/api/orders")
+class OrderController(
+	private val orderService: OrderService,
 ) {
-	@PostMapping("/preview")
-	fun preview(@Valid @RequestBody request: CartPreviewRequest): CartPreviewResponse =
-		cartService.preview(request)
+	@PostMapping
+	fun createOrder(@Valid @RequestBody request: CreateOrderRequest): OrderResponse =
+		orderService.createOrder(request)
 }

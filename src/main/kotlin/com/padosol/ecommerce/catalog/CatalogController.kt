@@ -1,4 +1,4 @@
-package com.example.designpattern.catalog
+package com.padosol.ecommerce.catalog
 
 import java.math.BigDecimal
 import org.springframework.http.HttpStatus

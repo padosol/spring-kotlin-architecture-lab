@@ -1,4 +1,4 @@
-package com.example.designpattern.promotion
+package com.padosol.ecommerce.promotion
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank

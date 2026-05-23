@@ -1,4 +1,4 @@
-package com.example.designpattern.inventory
+package com.padosol.ecommerce.inventory
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank

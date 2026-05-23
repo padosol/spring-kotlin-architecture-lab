@@ -1,4 +1,4 @@
-package com.example.designpattern.shipment
+package com.padosol.ecommerce.shipment
 
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
